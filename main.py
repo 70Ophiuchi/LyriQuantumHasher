@@ -46,15 +46,20 @@ class LyriHash():
                     hash.append(letters_lowercase[indexException])
                 else:
                     hash.append(bip32[index])
-        generated_hash = ''.join(hash)
-        hashed_word = generated_hash + word
 
-        hashed_dict = {word: generated_hash}
-
-        with open('hashes.txt', 'a') as f:
-            f.write(json.dumps(hashed_dict))
-            f.write('\n')
-        print('HASHED WORD: ' + hashed_word)
+        if not LyriHash().CheckPassword(str(hash)):
+            
+            generated_hash = ''.join(hash)
+            hashed_word = generated_hash + word
+            hashed_dict = {word: generated_hash}
+            
+            with open('hashes.txt', 'a') as f:
+                f.write(json.dumps(hashed_dict))
+                f.write('\n')
+            print('HASHED WORD: ' + hashed_word)
+        
+        else:
+            LyriHash().NormalHash(word, len(hash))
 
     def CheckPassword(self, hash):
 
@@ -73,7 +78,7 @@ class LyriHash():
             else:
                 print("Could not verify password")
                     
-    def BIP32_seek_phrase_gen(self, length):
+    def BIP32_seed_phrase_gen(self, length):
         
         word_lst = []
         for x in range(length):
